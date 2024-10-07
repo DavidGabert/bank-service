@@ -12,12 +12,12 @@ type CreateAccountInput struct {
 }
 
 type Account struct {
-	ID        uuid.UUID
-	Name      string
-	CPF       string
-	Secret    string
-	Balance   float64
-	CreatedAt time.Time
+	id        uuid.UUID
+	name      string
+	cpf       string
+	secret    string
+	balance   float64
+	createdAt time.Time
 }
 
 func newId() uuid.UUID {
@@ -26,10 +26,10 @@ func newId() uuid.UUID {
 
 func NewAccount(name string, cpf string, secret string) *Account {
 	return &Account{
-		ID:      newId(),
-		Name:    name,
-		CPF:     cpf,
-		Secret:  secret,
-		Balance: 0,
+		id:      newId(),
+		name:    name,
+		cpf:     cpf,
+		secret:  secret,
+		balance: 0,
 	}
 }
