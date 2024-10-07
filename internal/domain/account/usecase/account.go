@@ -4,7 +4,7 @@ import (
 	"bank-service/internal/domain/account"
 )
 
-var _ account.UseCase = Account{}
+var _ UseCase = Account{}
 
 type Account struct {
 	repository account.Repository

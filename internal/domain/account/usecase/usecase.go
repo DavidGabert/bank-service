@@ -1,4 +1,4 @@
-package account
+package usecase
 
 import (
 	"bank-service/internal/domain/entities"
