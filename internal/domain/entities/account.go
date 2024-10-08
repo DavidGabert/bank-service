@@ -20,6 +20,13 @@ type Account struct {
 	createdAt time.Time
 }
 
+func (a Account) Id() uuid.UUID        { return a.id }
+func (a Account) Name() string         { return a.name }
+func (a Account) Cpf() string          { return a.cpf }
+func (a Account) Secret() string       { return a.secret }
+func (a Account) Balance() float64     { return a.balance }
+func (a Account) CreatedAt() time.Time { return a.createdAt }
+
 func newId() uuid.UUID {
 	return uuid.New()
 }
