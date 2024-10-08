@@ -2,8 +2,9 @@ package usecase
 
 import (
 	"bank-service/internal/domain/entities"
+	"context"
 )
 
 type UseCase interface {
-	Create(input entities.CreateAccountInput) (*entities.Account, error)
+	Create(ctx context.Context, input entities.CreateAccountInput) (*entities.Account, error)
 }
