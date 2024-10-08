@@ -7,4 +7,5 @@ import (
 
 type Repository interface {
 	Create(ctx context.Context, account *entities.Account) (*entities.Account, error)
+	GetAccountById(ctx context.Context, accountId string) (*entities.Account, error)
 }
