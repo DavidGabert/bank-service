@@ -1,76 +1,78 @@
 package usecase
 
 import (
-	account2 "bank-service/internal/domain/account"
 	"bank-service/internal/domain/entities"
-	"fmt"
-	"github.com/google/uuid"
+	"context"
+	"errors"
 	"testing"
 )
 
-func TestCreate(t *testing.T) {
+func TestCreateAccount(t *testing.T) {
 	t.Parallel()
-	mockRepo := account2.MockRepository{}
-	account := Account{repository: &mockRepo}
-	input := entities.CreateAccountInput{
-		Name:   "John Doe",
-		CPF:    "12345678900",
-		Secret: "secret",
+
+	errDatabase := errors.New("database error")
+
+	type args struct {
+		ctx   context.Context
+		input entities.CreateAccountInput
 	}
 
-	mockRepo.CreateFunc = func(acc *entities.Account) (*entities.Account, error) {
-		return &entities.Account{
-			ID:     uuid.New(),
-			Name:   acc.Name,
-			CPF:    acc.CPF,
-			Secret: acc.Secret,
-		}, nil
+	commonArgs := args{
+		ctx: context.Background(),
+		input: entities.CreateAccountInput{
+			Name:   "Jon Doe",
+			CPF:    "843.361.730-36",
+			Secret: "SECRET-HASH",
+		},
 	}
 
-	result, err := account.Create(input)
-
-	if err != nil {
-		t.Errorf("Expected no error, got %v", err)
+	tests := []struct {
+		name      string
+		args      args
+		setup     func(t *testing.T) Account
+		wantError error
+	}{
+		{
+			name: "should return nil error and create an account",
+			args: commonArgs,
+			setup: func(t *testing.T) Account {
+				return Account{
+					repository: &MockRepository{
+						CreateFunc: func(ctx context.Context, account *entities.Account) (*entities.Account, error) {
+							return entities.NewAccount(account.Name(), account.Cpf(), account.Secret()), nil
+						},
+					},
+				}
+			},
+			wantError: nil,
+		},
+		{
+			name: "should return an database error when trying to create an account",
+			args: commonArgs,
+			setup: func(t *testing.T) Account {
+				return Account{
+					repository: &MockRepository{
+						CreateFunc: func(ctx context.Context, account *entities.Account) (*entities.Account, error) {
+							return nil, errDatabase
+						},
+					},
+				}
+			},
+			wantError: errDatabase,
+		},
 	}
 
-	if result == nil {
-		t.Error("Expected a non-nil result")
-	}
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 
-	if result.Name != input.Name {
-		t.Errorf("Expected name %s, got %s", input.Name, result.Name)
-	}
-
-	if result.CPF != input.CPF {
-		t.Errorf("Expected CPF %s, got %s", input.CPF, result.CPF)
-	}
-
-	if result.Secret != input.Secret {
-		t.Errorf("Expected secret %s, got %s", input.Secret, result.Secret)
-	}
-}
-
-func TestCreate_Error(t *testing.T) {
-	t.Parallel()
-	mockRepo := &account2.MockRepository{}
-	account := Account{repository: mockRepo}
-	input := entities.CreateAccountInput{
-		Name:   "John Doe",
-		CPF:    "12345678900",
-		Secret: "secret123",
-	}
-
-	mockRepo.CreateFunc = func(acc *entities.Account) (*entities.Account, error) {
-		return nil, fmt.Errorf("database error")
-	}
-
-	result, err := account.Create(input)
-
-	if err == nil {
-		t.Error("Expected an error, got nil")
-	}
-
-	if result != nil {
-		t.Error("Expected a nil result")
+			acc, err := tt.setup(t).Create(tt.args.ctx, tt.args.input)
+			if err != nil && !errors.Is(err, tt.wantError) {
+				t.Errorf("Create() error = %v, wantErr %v", err, tt.wantError)
+			} else if acc == nil && err == nil {
+				t.Errorf("Create() error, Account not created")
+			}
+		})
 	}
 }
