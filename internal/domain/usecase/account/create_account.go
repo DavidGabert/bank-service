@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	ErrCPFAlreadyLinked = fmt.Errorf("CPF is already linked to an account")
+	errCPFAlreadyLinked = fmt.Errorf("CPF is already linked to an account")
 )
 
 func (a Account) Create(ctx context.Context, input entities.CreateAccountInput) (*entities.Account, error) {
@@ -17,7 +17,7 @@ func (a Account) Create(ctx context.Context, input entities.CreateAccountInput) 
 		return nil, fmt.Errorf("get account by cpf: %w", err)
 	}
 	if acc != nil {
-		return nil, ErrCPFAlreadyLinked
+		return nil, errCPFAlreadyLinked
 	}
 	hashSecret := hash.Hash(input.Secret)
 	acc, err = a.repository.Create(ctx, entities.NewAccount(input.Name, input.CPF, hashSecret))

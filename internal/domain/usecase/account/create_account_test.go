@@ -83,7 +83,7 @@ func TestCreateAccount(t *testing.T) {
 					},
 				}
 			},
-			wantError: ErrCPFAlreadyLinked,
+			wantError: errCPFAlreadyLinked,
 		},
 	}
 
