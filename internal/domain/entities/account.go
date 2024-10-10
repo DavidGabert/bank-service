@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"bank-service/internal/domain/common/hash"
 	"github.com/google/uuid"
 	"time"
 )
@@ -36,7 +37,7 @@ func NewAccount(name string, cpf string, secret string) *Account {
 		id:      newId(),
 		name:    name,
 		cpf:     cpf,
-		secret:  secret,
+		secret:  hash.Hash(secret),
 		balance: 0,
 	}
 }
