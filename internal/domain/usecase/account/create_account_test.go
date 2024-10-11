@@ -2,6 +2,7 @@ package account
 
 import (
 	"bank-service/internal/domain/entities"
+	"bank-service/internal/domain/ports"
 	"context"
 	"errors"
 	"testing"
@@ -83,7 +84,7 @@ func TestCreateAccount(t *testing.T) {
 					},
 				}
 			},
-			wantError: errCPFAlreadyLinked,
+			wantError: ports.ErrCPFAlreadyLinked,
 		},
 	}
 
