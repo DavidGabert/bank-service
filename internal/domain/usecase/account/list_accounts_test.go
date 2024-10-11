@@ -33,10 +33,10 @@ func TestGetListAccounts(t *testing.T) {
 			setup: func(t *testing.T) Account {
 				return Account{
 					repository: &MockRepository{
-						GetListAccountsFunc: func(ctx context.Context) ([]*entities.Account, error) {
-							return []*entities.Account{
-								entities.NewAccount("John Doe", "123.456.789-00", "SECRET-HASH-1"),
-								entities.NewAccount("Jane Doe", "987.654.321-00", "SECRET-HASH-2"),
+						ListAccountsFunc: func(ctx context.Context) ([]entities.Account, error) {
+							return []entities.Account{
+								*entities.NewAccount("John Doe", "123.456.789-00", "SECRET-HASH-1"),
+								*entities.NewAccount("Jane Doe", "987.654.321-00", "SECRET-HASH-2"),
 							}, nil
 						},
 					},
@@ -51,7 +51,7 @@ func TestGetListAccounts(t *testing.T) {
 			setup: func(t *testing.T) Account {
 				return Account{
 					repository: &MockRepository{
-						GetListAccountsFunc: func(ctx context.Context) ([]*entities.Account, error) {
+						ListAccountsFunc: func(ctx context.Context) ([]entities.Account, error) {
 							return nil, errDatabase
 						},
 					},
@@ -67,7 +67,7 @@ func TestGetListAccounts(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			accounts, err := tt.setup(t).GetListAccounts(tt.args.ctx)
+			accounts, err := tt.setup(t).ListAccounts(tt.args.ctx)
 
 			if err != nil && !errors.Is(err, tt.wantError) {
 				t.Errorf("get list account error = %v, wantErr %v", err, tt.wantError)

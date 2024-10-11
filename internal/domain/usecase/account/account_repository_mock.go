@@ -10,7 +10,7 @@ type MockRepository struct {
 	CreateFunc          func(ctx context.Context, account *entities.Account) (*entities.Account, error)
 	GetAccountFunc      func(ctx context.Context, id string) (*entities.Account, error)
 	GetAccountByCpfFunc func(ctx context.Context, cpf string) (*entities.Account, error)
-	GetListAccountsFunc func(ctx context.Context) ([]*entities.Account, error)
+	ListAccountsFunc    func(ctx context.Context) ([]entities.Account, error)
 }
 
 func (m *MockRepository) Create(ctx context.Context, account *entities.Account) (*entities.Account, error) {
@@ -34,9 +34,9 @@ func (m *MockRepository) GetAccountByCpf(ctx context.Context, cpf string) (*enti
 	return nil, fmt.Errorf("GetAccountByCpfFunc not implemented")
 }
 
-func (m *MockRepository) GetListAccounts(ctx context.Context) ([]*entities.Account, error) {
-	if m.GetListAccountsFunc != nil {
-		return m.GetListAccountsFunc(ctx)
+func (m *MockRepository) ListAccounts(ctx context.Context) ([]entities.Account, error) {
+	if m.ListAccountsFunc != nil {
+		return m.ListAccountsFunc(ctx)
 	}
 	return nil, fmt.Errorf("GetAccountByCpfFunc not implemented")
 }
