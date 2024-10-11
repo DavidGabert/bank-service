@@ -2,6 +2,7 @@ package entities
 
 import (
 	"bank-service/internal/domain/common/hash"
+	"bank-service/internal/domain/ports"
 	"github.com/google/uuid"
 	"time"
 )
@@ -40,4 +41,22 @@ func NewAccount(name string, cpf string, secret string) *Account {
 		secret:  hash.Hash(secret),
 		balance: 0,
 	}
+}
+
+func (a Account) AddBalance(amount float64) error {
+	if amount <= 0 {
+		return ports.ErrInvalidTransferAmount
+	}
+	a.balance += amount
+	return nil
+}
+
+func (a Account) SubtractBalance(amount float64) error {
+	if amount <= 0 {
+		return ports.ErrInvalidTransferAmount
+	} else if amount > a.balance {
+		return ports.ErrInsufficientBalance
+	}
+	a.balance -= amount
+	return nil
 }
