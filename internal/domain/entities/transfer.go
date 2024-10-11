@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"errors"
+	"bank-service/internal/domain/ports"
 	"github.com/google/uuid"
 	"time"
 )
@@ -45,10 +45,10 @@ func NewTransfer(accountOriginId uuid.UUID, accountDestinationId uuid.UUID, amou
 
 func (t Transfer) validate() error {
 	if t.amount <= 0 {
-		return errors.New("amount must be greater than zero")
+		return ports.ErrInvalidTransferAmount
 	}
 	if t.accountOriginId == t.accountDestinationId {
-		return errors.New("account destination id and origin id cannot be the same")
+		return ports.ErrOrigAccEqualDestAcc
 	}
 	return nil
 }
