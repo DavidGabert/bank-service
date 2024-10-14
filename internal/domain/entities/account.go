@@ -43,7 +43,7 @@ func NewAccount(name string, cpf string, secret string) *Account {
 	}
 }
 
-func (a Account) AddBalance(amount float64) error {
+func (a *Account) AddBalance(amount float64) error {
 	if amount <= 0 {
 		return ports.ErrInvalidTransferAmount
 	}
@@ -51,7 +51,7 @@ func (a Account) AddBalance(amount float64) error {
 	return nil
 }
 
-func (a Account) SubtractBalance(amount float64) error {
+func (a *Account) SubtractBalance(amount float64) error {
 	if amount <= 0 {
 		return ports.ErrInvalidTransferAmount
 	} else if amount > a.balance {
