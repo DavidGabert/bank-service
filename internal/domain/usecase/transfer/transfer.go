@@ -7,8 +7,8 @@ type Transfer struct {
 	useCaseAccount account.Account
 }
 
-func NewTransferUseCase(repo Repository, useCaseAccount account.Account) *Transfer {
-	return &Transfer{
+func NewTransferUseCase(repo Repository, useCaseAccount account.Account) Transfer {
+	return Transfer{
 		repository:     repo,
 		useCaseAccount: useCaseAccount,
 	}
