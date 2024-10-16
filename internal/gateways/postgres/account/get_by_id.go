@@ -3,6 +3,7 @@ package account
 import (
 	"bank-service/internal/domain/entities"
 	"context"
+	"fmt"
 	"github.com/google/uuid"
 	"time"
 )
@@ -38,7 +39,7 @@ func (r Repository) GetAccountById(ctx context.Context, accountId uuid.UUID) (en
 	)
 
 	if err != nil {
-		return entities.Account{}, err
+		return entities.Account{}, fmt.Errorf("error getting account by id: %w", err)
 	}
 	return entities.ParseAccount(id, name, cpfAcc, secret, balance, createdAt), nil
 }

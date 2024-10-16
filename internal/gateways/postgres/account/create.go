@@ -3,6 +3,7 @@ package account
 import (
 	"bank-service/internal/domain/entities"
 	"context"
+	"fmt"
 )
 
 func (r Repository) Create(ctx context.Context, account entities.Account) (entities.Account, error) {
@@ -21,7 +22,7 @@ func (r Repository) Create(ctx context.Context, account entities.Account) (entit
 	).Scan(account.SetCreatedAt)
 
 	if err != nil {
-		return entities.Account{}, err
+		return entities.Account{}, fmt.Errorf("error creating account: %w", err)
 	}
 
 	return account, nil

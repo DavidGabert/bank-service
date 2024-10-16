@@ -3,6 +3,7 @@ package account
 import (
 	"bank-service/internal/domain/entities"
 	"context"
+	"fmt"
 	"github.com/google/uuid"
 	"time"
 )
@@ -39,7 +40,7 @@ func (r Repository) GetAccountByCpf(ctx context.Context, cpf string) (entities.A
 	)
 
 	if err != nil {
-		return entities.Account{}, err
+		return entities.Account{}, fmt.Errorf("error getting account by cpf: %w", err)
 	}
 	return entities.ParseAccount(id, name, cpfAcc, secret, balance, createdAt), nil
 }
