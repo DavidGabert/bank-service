@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (r Repository) GetAccountById(ctx context.Context, accountId uuid.UUID) (*entities.Account, error) {
+func (r Repository) GetAccountById(ctx context.Context, accountId uuid.UUID) (entities.Account, error) {
 	const query = `
 		SELECT
 			id,
@@ -38,9 +38,7 @@ func (r Repository) GetAccountById(ctx context.Context, accountId uuid.UUID) (*e
 	)
 
 	if err != nil {
-		return nil, err
+		return entities.Account{}, err
 	}
-
-	account := entities.ParseAccount(id, name, cpfAcc, secret, balance, createdAt)
-	return &account, nil
+	return entities.ParseAccount(id, name, cpfAcc, secret, balance, createdAt), nil
 }
