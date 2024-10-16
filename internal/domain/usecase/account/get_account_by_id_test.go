@@ -22,7 +22,7 @@ func TestGetAccountById(t *testing.T) {
 	commonArgs := args{
 		ctx:           context.Background(),
 		accountId:     uuid.New(),
-		accountEntity: *entities.NewAccount("John Doe", "843.361.730-36", "SECRET-HASH"),
+		accountEntity: entities.NewAccount("John Doe", "843.361.730-36", "SECRET-HASH"),
 	}
 
 	tests := []struct {

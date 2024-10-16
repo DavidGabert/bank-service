@@ -8,17 +8,17 @@ import (
 )
 
 type MockRepository struct {
-	CreateFunc          func(ctx context.Context, account *entities.Account) (*entities.Account, error)
+	CreateFunc          func(ctx context.Context, account entities.Account) (entities.Account, error)
 	GetAccountFunc      func(ctx context.Context, accountId uuid.UUID) (entities.Account, error)
 	GetAccountByCpfFunc func(ctx context.Context, cpf string) (entities.Account, error)
 	ListAccountsFunc    func(ctx context.Context) ([]entities.Account, error)
 }
 
-func (m *MockRepository) Create(ctx context.Context, account *entities.Account) (*entities.Account, error) {
+func (m *MockRepository) Create(ctx context.Context, account entities.Account) (entities.Account, error) {
 	if m.CreateFunc != nil {
 		return m.CreateFunc(ctx, account)
 	}
-	return nil, fmt.Errorf("CreateFunc not implemented")
+	return entities.Account{}, fmt.Errorf("CreateFunc not implemented")
 }
 
 func (m *MockRepository) GetAccountById(ctx context.Context, accountId uuid.UUID) (entities.Account, error) {

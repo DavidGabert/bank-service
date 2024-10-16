@@ -48,8 +48,8 @@ func newId() uuid.UUID {
 	return uuid.New()
 }
 
-func NewAccount(name string, cpf string, secret string) *Account {
-	return &Account{
+func NewAccount(name string, cpf string, secret string) Account {
+	return Account{
 		id:      newId(),
 		name:    name,
 		cpf:     cpf,

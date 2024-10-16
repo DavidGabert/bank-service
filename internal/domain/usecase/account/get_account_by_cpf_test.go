@@ -21,7 +21,7 @@ func TestGetAccountByCpf(t *testing.T) {
 	commonArgs := args{
 		ctx:           context.Background(),
 		cpf:           "843.361.730-36",
-		accountEntity: *entities.NewAccount("John Doe", "843.361.730-36", "SECRET-HASH"),
+		accountEntity: entities.NewAccount("John Doe", "843.361.730-36", "SECRET-HASH"),
 	}
 
 	tests := []struct {
