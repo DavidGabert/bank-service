@@ -5,7 +5,7 @@ import (
 	"context"
 )
 
-func (r Repository) Create(ctx context.Context, account *entities.Account) (*entities.Account, error) {
+func (r Repository) Create(ctx context.Context, account entities.Account) (entities.Account, error) {
 	const query = `
 		INSERT INTO account
 			(id, name, cpf, secret, balance)
@@ -21,7 +21,7 @@ func (r Repository) Create(ctx context.Context, account *entities.Account) (*ent
 	).Scan(account.SetCreatedAt)
 
 	if err != nil {
-		return nil, err
+		return entities.Account{}, err
 	}
 
 	return account, nil
