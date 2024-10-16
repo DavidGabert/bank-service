@@ -36,7 +36,7 @@ func (t Transfer) TransferAmount(ctx context.Context, input entities.InputTransf
 		return fmt.Errorf("%s: %w", errMsgTransferAmount, err)
 	}
 
-	err = t.repository.PerformTransfer(ctx, &entities.PerformTransferenceInput{
+	err = t.repository.PerformTransfer(ctx, entities.PerformTransferenceInput{
 		AccountOrigin:      accTransferOrigin,
 		AccountDestination: accTransferDestin,
 		Transfer:           transfer,

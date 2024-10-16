@@ -13,9 +13,9 @@ type InputTransfer struct {
 }
 
 type PerformTransferenceInput struct {
-	AccountOrigin      *Account
-	AccountDestination *Account
-	Transfer           *Transfer
+	AccountOrigin      Account
+	AccountDestination Account
+	Transfer           Transfer
 }
 
 type Transfer struct {
@@ -29,8 +29,8 @@ type Transfer struct {
 func (t Transfer) AccountOriginId() uuid.UUID      { return t.accountOriginId }
 func (t Transfer) AccountDestinationId() uuid.UUID { return t.accountDestinationId }
 
-func NewTransfer(accountOriginId uuid.UUID, accountDestinationId uuid.UUID, amount float64) (*Transfer, error) {
-	newTransfer := &Transfer{
+func NewTransfer(accountOriginId uuid.UUID, accountDestinationId uuid.UUID, amount float64) (Transfer, error) {
+	newTransfer := Transfer{
 		id:                   newId(),
 		accountOriginId:      accountOriginId,
 		accountDestinationId: accountDestinationId,
@@ -38,7 +38,7 @@ func NewTransfer(accountOriginId uuid.UUID, accountDestinationId uuid.UUID, amou
 	}
 	err := newTransfer.validate()
 	if err != nil {
-		return nil, err
+		return Transfer{}, err
 	}
 	return newTransfer, nil
 }

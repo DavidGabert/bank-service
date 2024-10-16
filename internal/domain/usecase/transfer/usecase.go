@@ -6,5 +6,5 @@ import (
 )
 
 type UseCase interface {
-	TransferAmount(ctx context.Context, transfer entities.Transfer) error
+	TransferAmount(ctx context.Context, input entities.InputTransfer) error
 }
