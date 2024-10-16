@@ -26,8 +26,12 @@ type Transfer struct {
 	createdAt            time.Time
 }
 
-func (t Transfer) AccountOriginId() uuid.UUID      { return t.accountOriginId }
-func (t Transfer) AccountDestinationId() uuid.UUID { return t.accountDestinationId }
+func (t Transfer) Id() uuid.UUID                     { return t.id }
+func (t Transfer) AccountOriginId() uuid.UUID        { return t.accountOriginId }
+func (t Transfer) AccountDestinationId() uuid.UUID   { return t.accountDestinationId }
+func (t Transfer) Amount() float64                   { return t.amount }
+func (t Transfer) CreatedAt() time.Time              { return t.createdAt }
+func (t *Transfer) SetCreatedAt(createdAt time.Time) { t.createdAt = createdAt }
 
 func NewTransfer(accountOriginId uuid.UUID, accountDestinationId uuid.UUID, amount float64) (Transfer, error) {
 	newTransfer := Transfer{
