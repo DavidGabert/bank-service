@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (r Repository) GetAccountByCpf(ctx context.Context, cpf string) (*entities.Account, error) {
+func (r Repository) GetAccountByCpf(ctx context.Context, cpf string) (entities.Account, error) {
 
 	const query = `
 		SELECT
@@ -39,8 +39,7 @@ func (r Repository) GetAccountByCpf(ctx context.Context, cpf string) (*entities.
 	)
 
 	if err != nil {
-		return nil, err
+		return entities.Account{}, err
 	}
-	account := entities.ParseAccount(id, name, cpfAcc, secret, balance, createdAt)
-	return &account, nil
+	return entities.ParseAccount(id, name, cpfAcc, secret, balance, createdAt), nil
 }
