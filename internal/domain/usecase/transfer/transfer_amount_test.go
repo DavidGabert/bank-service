@@ -43,21 +43,21 @@ func TestTransfer(t *testing.T) {
 			args: commonArgs,
 			setup: func(t *testing.T) Transfer {
 				return NewTransferUseCase(&MockRepository{
-					PerformTransferFunc: func(ctx context.Context, input *entities.PerformTransferenceInput) error {
+					PerformTransferFunc: func(ctx context.Context, input entities.PerformTransferenceInput) error {
 						return nil
 					}}, *account.NewAccountUseCase(&account.MockRepository{
-					GetAccountFunc: func(ctx context.Context, accountId uuid.UUID) (*entities.Account, error) {
+					GetAccountFunc: func(ctx context.Context, accountId uuid.UUID) (entities.Account, error) {
 						if accountId == originUuidAcc {
 							acc := entities.NewAccount("Account Test Origin", "106.435.680-00", "SECRET-HASH-ORI")
 							err := acc.AddBalance(originAccBalance)
 							if err != nil {
-								return nil, err
+								return entities.Account{}, err
 							}
 							return acc, nil
 						} else if accountId == destinUuidAcc {
 							return entities.NewAccount("Account Test Destination", "073.294.310-87", "SECRET-HASH-DES"), nil
 						}
-						return nil, nil
+						return entities.Account{}, nil
 					},
 				}))
 			},
@@ -68,16 +68,16 @@ func TestTransfer(t *testing.T) {
 			args: commonArgs,
 			setup: func(t *testing.T) Transfer {
 				return NewTransferUseCase(&MockRepository{
-					PerformTransferFunc: func(ctx context.Context, input *entities.PerformTransferenceInput) error {
+					PerformTransferFunc: func(ctx context.Context, input entities.PerformTransferenceInput) error {
 						return nil
 					}}, *account.NewAccountUseCase(&account.MockRepository{
-					GetAccountFunc: func(ctx context.Context, accountId uuid.UUID) (*entities.Account, error) {
+					GetAccountFunc: func(ctx context.Context, accountId uuid.UUID) (entities.Account, error) {
 						if accountId == originUuidAcc {
 							return entities.NewAccount("Account Test Origin", "106.435.680-00", "SECRET-HASH-ORI"), nil
 						} else if accountId == destinUuidAcc {
 							return entities.NewAccount("Account Test Destination", "073.294.310-87", "SECRET-HASH-DES"), nil
 						}
-						return nil, nil
+						return entities.Account{}, nil
 					},
 				}))
 			},
@@ -88,16 +88,16 @@ func TestTransfer(t *testing.T) {
 			args: commonArgs,
 			setup: func(t *testing.T) Transfer {
 				return NewTransferUseCase(&MockRepository{
-					PerformTransferFunc: func(ctx context.Context, input *entities.PerformTransferenceInput) error {
+					PerformTransferFunc: func(ctx context.Context, input entities.PerformTransferenceInput) error {
 						return nil
 					}}, *account.NewAccountUseCase(&account.MockRepository{
-					GetAccountFunc: func(ctx context.Context, accountId uuid.UUID) (*entities.Account, error) {
+					GetAccountFunc: func(ctx context.Context, accountId uuid.UUID) (entities.Account, error) {
 						if accountId == originUuidAcc {
 							return entities.NewAccount("Account Test Origin", "106.435.680-00", "SECRET-HASH-ORI"), nil
 						} else if accountId == destinUuidAcc {
-							return nil, errDatabase
+							return entities.Account{}, errDatabase
 						}
-						return nil, nil
+						return entities.Account{}, nil
 					},
 				}))
 			},
