@@ -16,7 +16,7 @@ func TestCreateAccount(t *testing.T) {
 	type args struct {
 		ctx            context.Context
 		input          entities.CreateAccountInput
-		existingCpfAcc *entities.Account
+		existingCpfAcc entities.Account
 	}
 
 	commonArgs := args{
@@ -41,11 +41,11 @@ func TestCreateAccount(t *testing.T) {
 			setup: func(t *testing.T) Account {
 				return Account{
 					repository: &MockRepository{
-						CreateFunc: func(ctx context.Context, account *entities.Account) (*entities.Account, error) {
+						CreateFunc: func(ctx context.Context, account entities.Account) (entities.Account, error) {
 							return entities.NewAccount(account.Name(), account.Cpf(), account.Secret()), nil
 						},
-						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (*entities.Account, error) {
-							return nil, nil
+						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (entities.Account, error) {
+							return entities.Account{}, nil
 						},
 					},
 				}
@@ -58,11 +58,11 @@ func TestCreateAccount(t *testing.T) {
 			setup: func(t *testing.T) Account {
 				return Account{
 					repository: &MockRepository{
-						CreateFunc: func(ctx context.Context, account *entities.Account) (*entities.Account, error) {
-							return nil, errDatabase
+						CreateFunc: func(ctx context.Context, account entities.Account) (entities.Account, error) {
+							return entities.Account{}, errDatabase
 						},
-						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (*entities.Account, error) {
-							return nil, nil
+						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (entities.Account, error) {
+							return entities.Account{}, nil
 						},
 					},
 				}
@@ -75,10 +75,10 @@ func TestCreateAccount(t *testing.T) {
 			setup: func(t *testing.T) Account {
 				return Account{
 					repository: &MockRepository{
-						CreateFunc: func(ctx context.Context, account *entities.Account) (*entities.Account, error) {
+						CreateFunc: func(ctx context.Context, account entities.Account) (entities.Account, error) {
 							return entities.NewAccount(account.Name(), account.Cpf(), account.Secret()), nil
 						},
-						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (*entities.Account, error) {
+						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (entities.Account, error) {
 							return commonArgs.existingCpfAcc, nil
 						},
 					},
@@ -95,7 +95,7 @@ func TestCreateAccount(t *testing.T) {
 			acc, err := tt.setup(t).Create(tt.args.ctx, tt.args.input)
 			if err != nil && !errors.Is(err, tt.wantError) {
 				t.Errorf("create account failed test = %v, wantErr %v", err, tt.wantError)
-			} else if acc == nil && err == nil {
+			} else if (acc == entities.Account{}) && err == nil {
 				t.Errorf("create account failed test, account not created")
 			}
 		})

@@ -35,8 +35,8 @@ func TestGetListAccounts(t *testing.T) {
 					repository: &MockRepository{
 						ListAccountsFunc: func(ctx context.Context) ([]entities.Account, error) {
 							return []entities.Account{
-								*entities.NewAccount("John Doe", "123.456.789-00", "SECRET-HASH-1"),
-								*entities.NewAccount("Jane Doe", "987.654.321-00", "SECRET-HASH-2"),
+								entities.NewAccount("John Doe", "123.456.789-00", "SECRET-HASH-1"),
+								entities.NewAccount("Jane Doe", "987.654.321-00", "SECRET-HASH-2"),
 							}, nil
 						},
 					},

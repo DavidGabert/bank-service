@@ -2,6 +2,8 @@ package transfer
 
 import "bank-service/internal/domain/usecase/account"
 
+var _ UseCase = Transfer{}
+
 type Transfer struct {
 	repository     Repository
 	useCaseAccount account.Account

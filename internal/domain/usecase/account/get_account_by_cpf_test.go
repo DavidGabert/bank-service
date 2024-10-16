@@ -15,7 +15,7 @@ func TestGetAccountByCpf(t *testing.T) {
 	type args struct {
 		ctx           context.Context
 		cpf           string
-		accountEntity *entities.Account
+		accountEntity entities.Account
 	}
 
 	commonArgs := args{
@@ -37,7 +37,7 @@ func TestGetAccountByCpf(t *testing.T) {
 			setup: func(t *testing.T) Account {
 				return Account{
 					repository: &MockRepository{
-						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (*entities.Account, error) {
+						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (entities.Account, error) {
 							return commonArgs.accountEntity, nil
 						},
 					},
@@ -51,8 +51,8 @@ func TestGetAccountByCpf(t *testing.T) {
 			setup: func(t *testing.T) Account {
 				return Account{
 					repository: &MockRepository{
-						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (*entities.Account, error) {
-							return nil, errDatabase
+						GetAccountByCpfFunc: func(ctx context.Context, cpf string) (entities.Account, error) {
+							return entities.Account{}, errDatabase
 						},
 					},
 				}
@@ -69,7 +69,7 @@ func TestGetAccountByCpf(t *testing.T) {
 			acc, err := tt.setup(t).GetAccountByCpf(tt.args.ctx, tt.args.cpf)
 			if err != nil && !errors.Is(err, tt.wantError) {
 				t.Errorf("GetAccountByCpf() error = %v, wantErr %v", err, tt.wantError)
-			} else if acc == nil && err == nil {
+			} else if (acc == entities.Account{}) && err == nil {
 				t.Errorf("GetAccountByCpf() error, failed to get account")
 			}
 		})

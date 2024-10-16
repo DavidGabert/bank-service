@@ -7,10 +7,10 @@ import (
 )
 
 type MockRepository struct {
-	PerformTransferFunc func(ctx context.Context, input *entities.PerformTransferenceInput) error
+	PerformTransferFunc func(ctx context.Context, input entities.PerformTransferenceInput) error
 }
 
-func (m *MockRepository) PerformTransfer(ctx context.Context, input *entities.PerformTransferenceInput) error {
+func (m *MockRepository) PerformTransfer(ctx context.Context, input entities.PerformTransferenceInput) error {
 	if m.PerformTransferFunc != nil {
 		return m.PerformTransferFunc(ctx, input)
 	}

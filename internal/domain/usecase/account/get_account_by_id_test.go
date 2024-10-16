@@ -16,7 +16,7 @@ func TestGetAccountById(t *testing.T) {
 	type args struct {
 		ctx           context.Context
 		accountId     uuid.UUID
-		accountEntity *entities.Account
+		accountEntity entities.Account
 	}
 
 	commonArgs := args{
@@ -38,7 +38,7 @@ func TestGetAccountById(t *testing.T) {
 			setup: func(t *testing.T) Account {
 				return Account{
 					repository: &MockRepository{
-						GetAccountFunc: func(ctx context.Context, id uuid.UUID) (*entities.Account, error) {
+						GetAccountFunc: func(ctx context.Context, id uuid.UUID) (entities.Account, error) {
 							return commonArgs.accountEntity, nil
 						},
 					},
@@ -52,8 +52,8 @@ func TestGetAccountById(t *testing.T) {
 			setup: func(t *testing.T) Account {
 				return Account{
 					repository: &MockRepository{
-						GetAccountFunc: func(ctx context.Context, id uuid.UUID) (*entities.Account, error) {
-							return nil, errDatabase
+						GetAccountFunc: func(ctx context.Context, id uuid.UUID) (entities.Account, error) {
+							return entities.Account{}, errDatabase
 						},
 					},
 				}
@@ -70,7 +70,7 @@ func TestGetAccountById(t *testing.T) {
 			acc, err := tt.setup(t).GetAccountById(tt.args.ctx, tt.args.accountId)
 			if err != nil && !errors.Is(err, tt.wantError) {
 				t.Errorf("get account by id error = %v, wantErr %v", err, tt.wantError)
-			} else if acc == nil && err == nil {
+			} else if (acc == entities.Account{}) && err == nil {
 				t.Errorf("get account by id error, failed to get account")
 			}
 		})

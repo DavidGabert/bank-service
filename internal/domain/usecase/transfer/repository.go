@@ -6,5 +6,5 @@ import (
 )
 
 type Repository interface {
-	PerformTransfer(ctx context.Context, input *entities.PerformTransferenceInput) error
+	PerformTransfer(ctx context.Context, input entities.PerformTransferenceInput) error
 }

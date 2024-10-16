@@ -6,10 +6,10 @@ import (
 	"fmt"
 )
 
-func (a Account) GetAccountByCpf(ctx context.Context, cpf string) (*entities.Account, error) {
+func (a Account) GetAccountByCpf(ctx context.Context, cpf string) (entities.Account, error) {
 	acc, err := a.repository.GetAccountByCpf(ctx, cpf)
 	if err != nil {
-		return nil, fmt.Errorf("get account by cpf: %w", err)
+		return entities.Account{}, fmt.Errorf("get account by cpf: %w", err)
 	}
 	return acc, nil
 }
