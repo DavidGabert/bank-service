@@ -22,8 +22,6 @@ func (h Handler) GetBalance(r *http.Request) rest.Response {
 
 	acc, err := h.AccountUc.GetAccountById(ctx, parse)
 	if err != nil {
-		//TODO: REFACTOR ERROR, PUT ERRORS ON PORTS?
-		//404!?
 		return rest.InternalServerError(err)
 	}
 	return rest.Ok(GetBalanceResponse{Balance: acc.Balance()})

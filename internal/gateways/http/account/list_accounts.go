@@ -24,7 +24,6 @@ func (h Handler) List(r *http.Request) rest.Response {
 	ctx := r.Context()
 	output, err := h.AccountUc.ListAccounts(ctx)
 	if err != nil {
-		//TODO: REFACTOR ERROR, PUT ERRORS ON PORTS?
 		return rest.InternalServerError(err)
 	}
 
