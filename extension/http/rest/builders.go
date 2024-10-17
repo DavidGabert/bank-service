@@ -9,6 +9,13 @@ func Ok(body any) Response {
 	}
 }
 
+func UnprocessableEntity(body any) Response {
+	return Response{
+		Status: http.StatusUnprocessableEntity,
+		Body:   body,
+	}
+}
+
 func Created(body any) Response {
 	return Response{
 		Status: http.StatusCreated,
