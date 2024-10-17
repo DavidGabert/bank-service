@@ -3,7 +3,9 @@ package account
 import (
 	"bank-service/extension/http/rest"
 	"bank-service/internal/domain/entities"
+	"bank-service/internal/domain/ports"
 	"encoding/json"
+	"errors"
 	"github.com/google/uuid"
 	"net/http"
 	"time"
@@ -38,8 +40,9 @@ func (h Handler) Create(r *http.Request) rest.Response {
 	})
 
 	if err != nil {
-		//TODO: REFACTOR ERROR, PUT ERRORS ON PORTS?
-		//ERROR WHEN A ACC ALREADY EXISTS? 422!?
+		if errors.Is(ports.ErrCPFAlreadyLinked, err) {
+			return rest.UnprocessableEntity(err)
+		}
 		return rest.InternalServerError(err)
 	}
 
